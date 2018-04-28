@@ -26,10 +26,23 @@
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="Instance1" mc="Standard.Instance" uid="a64e2c51-1df3-4938-a57a-6b540449e75c"/>
+          <ATTRIBUTES>
+            <ATT name="IsConstant">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="Name"><![CDATA[Instance1]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
       </COMP>
       <COMP relation="OwnedElement">
         <COMPID name="device - AppServer" mc="Standard.Node" uid="a066b1a6-816c-44e5-a922-bd0d4aa741f5"/>
         <COMPID name="Artifact" mc="Standard.Artifact" uid="31da1fd5-7b43-4354-b11e-3229155b6102"/>
+        <COMPID name="Node" mc="Standard.Node" uid="0dc6ec55-ae53-4d88-8643-365ed2779f1f"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="diagram" mc="Standard.DeploymentDiagram" uid="3b3d4a42-ed6a-46db-9c20-c3664a06e127"/>
