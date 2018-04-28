@@ -27,7 +27,11 @@
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
         <OBJECT>
+<<<<<<< HEAD
           <ID name="Instance1" mc="Standard.Instance" uid="654101da-d8ff-48d5-8549-227ff75d2b51"/>
+=======
+          <ID name="Instance1" mc="Standard.Instance" uid="a64e2c51-1df3-4938-a57a-6b540449e75c"/>
+>>>>>>> 906888fb87bead7d72520a47096a45a639fd53fd
           <ATTRIBUTES>
             <ATT name="IsConstant">false</ATT>
             <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
@@ -38,6 +42,7 @@
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
+<<<<<<< HEAD
         <OBJECT>
           <ID name="Instance2" mc="Standard.Instance" uid="f6a229cf-aa5e-4e02-adea-13fa6a886ec5"/>
           <ATTRIBUTES>
@@ -50,10 +55,13 @@
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
+=======
+>>>>>>> 906888fb87bead7d72520a47096a45a639fd53fd
       </COMP>
       <COMP relation="OwnedElement">
         <COMPID name="device - AppServer" mc="Standard.Node" uid="a066b1a6-816c-44e5-a922-bd0d4aa741f5"/>
         <COMPID name="Artifact" mc="Standard.Artifact" uid="31da1fd5-7b43-4354-b11e-3229155b6102"/>
+        <COMPID name="Node" mc="Standard.Node" uid="0dc6ec55-ae53-4d88-8643-365ed2779f1f"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="diagram" mc="Standard.DeploymentDiagram" uid="3b3d4a42-ed6a-46db-9c20-c3664a06e127"/>
