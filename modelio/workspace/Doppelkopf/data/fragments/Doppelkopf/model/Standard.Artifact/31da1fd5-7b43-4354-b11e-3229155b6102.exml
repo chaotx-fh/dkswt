@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Artifact" version="4">
+  <OBJECT>
+    <ID name="Artifact" mc="Standard.Artifact" uid="31da1fd5-7b43-4354-b11e-3229155b6102"/>
+    <PID name="deployement_diagram" mc="Standard.Package" uid="7f0d936e-48ce-49c3-a06c-66c57d63d934"/>
+    <ATTRIBUTES>
+      <ATT name="FileName"><![CDATA[Termin.jar]]></ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Artifact]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Utilized">
+        <OBJECT>
+          <ID name="Manifestation" mc="Standard.Manifestation" uid="c8183542-53d3-414d-a357-907f6bcecbc4"/>
+          <ATTRIBUTES>
+            <ATT name="Name"><![CDATA[Manifestation]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="UtilizedElement">
+              <ID name="device - AppServer" mc="Standard.Node" uid="a066b1a6-816c-44e5-a922-bd0d4aa741f5"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

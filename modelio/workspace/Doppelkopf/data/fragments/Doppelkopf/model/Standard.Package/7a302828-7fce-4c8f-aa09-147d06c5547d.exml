@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="doppelkopf" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="component_diagram" version="4">
   <OBJECT>
-    <ID name="doppelkopf" mc="Standard.Package" uid="7a302828-7fce-4c8f-aa09-147d06c5547d"/>
+    <ID name="component_diagram" mc="Standard.Package" uid="7a302828-7fce-4c8f-aa09-147d06c5547d"/>
     <PID name="Doppelkopf" mc="Standard.Project" uid="7802b285-9768-411a-8b58-570432570980"/>
     <ATTRIBUTES>
       <ATT name="IsInstantiable">false</ATT>
@@ -9,13 +9,12 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[doppelkopf]]></ATT>
+      <ATT name="Name"><![CDATA[component_diagram]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
       <COMP relation="Product">
-        <COMPID name="component diagram" mc="Standard.ClassDiagram" uid="c88cb0bd-70b8-4a43-9abe-ed3f8fee7286"/>
-        <COMPID name="deployment diagram" mc="Standard.DeploymentDiagram" uid="5e5519ad-d8bc-469a-9c08-b629b7196993"/>
+        <COMPID name="diagram" mc="Standard.ClassDiagram" uid="4e84e1d1-c28e-4253-a1da-c66fb9d62983"/>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

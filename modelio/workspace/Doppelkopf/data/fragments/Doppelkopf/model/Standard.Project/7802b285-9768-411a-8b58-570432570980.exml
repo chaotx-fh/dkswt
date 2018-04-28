@@ -10,7 +10,8 @@
     </ATTRIBUTES>
     <DEPENDENCIES>
       <COMP relation="Model">
-        <COMPID name="doppelkopf" mc="Standard.Package" uid="7a302828-7fce-4c8f-aa09-147d06c5547d"/>
+        <COMPID name="component_diagram" mc="Standard.Package" uid="7a302828-7fce-4c8f-aa09-147d06c5547d"/>
+        <COMPID name="deployement_diagram" mc="Standard.Package" uid="7f0d936e-48ce-49c3-a06c-66c57d63d934"/>
       </COMP>
       <COMP relation="DiagramRoot">
         <COMPID name="Doppelkopf" mc="Infrastructure.DiagramSet" uid="dfcf051e-86a1-491e-8b94-104652ce663a"/>
