@@ -1,0 +1,15 @@
+# build dircetory
+build
+
+# compile output
+*.class
+
+# executables
+*.jar
+*.exe
+
+# log files
+*.log
+
+# other
+.runtime

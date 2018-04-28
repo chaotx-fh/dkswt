@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Doppelkopf" version="4">
+  <OBJECT>
+    <ID name="Doppelkopf" mc="Standard.Project" uid="7802b285-9768-411a-8b58-570432570980"/>
+    <ATTRIBUTES>
+      <ATT name="ProjectContext"></ATT>
+      <ATT name="ProjectDescr"></ATT>
+      <ATT name="Name"><![CDATA[Doppelkopf]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="Model">
+        <COMPID name="doppelkopf" mc="Standard.Package" uid="7a302828-7fce-4c8f-aa09-147d06c5547d"/>
+      </COMP>
+      <COMP relation="DiagramRoot">
+        <COMPID name="Doppelkopf" mc="Infrastructure.DiagramSet" uid="dfcf051e-86a1-491e-8b94-104652ce663a"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
