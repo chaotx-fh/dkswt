@@ -13,6 +13,20 @@
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>
+      <COMP relation="Declared">
+        <OBJECT>
+          <ID name="Instance" mc="Standard.Instance" uid="0cb06d1a-94df-44ae-939c-ea352259ed65"/>
+          <ATTRIBUTES>
+            <ATT name="IsConstant">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="Name"><![CDATA[Instance]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
       <COMP relation="OwnedElement">
         <COMPID name="device - AppServer" mc="Standard.Node" uid="a066b1a6-816c-44e5-a922-bd0d4aa741f5"/>
         <COMPID name="Artifact" mc="Standard.Artifact" uid="31da1fd5-7b43-4354-b11e-3229155b6102"/>
