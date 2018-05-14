@@ -13,3 +13,6 @@ build
 
 # other
 .runtime
+
+# mac stuff
+.DS_Store
