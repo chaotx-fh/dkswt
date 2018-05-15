@@ -3,6 +3,7 @@ package eu.zoho.chaotx.doppelkopf.server;
 import java.util.ArrayList;
 import java.util.List;
 
+
 class SessionManager {
     private static List<DKSession> sessions;
 
@@ -18,7 +19,6 @@ class SessionManager {
                     session.start();
                     break;
                 case RUNNING:
-                    // all good
                     session.check();
                     break;
                 case TERMINATED:

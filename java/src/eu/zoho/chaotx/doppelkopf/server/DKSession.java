@@ -1,25 +1,32 @@
 package eu.zoho.chaotx.doppelkopf.server;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import eu.zoho.chaotx.doppelkopf.client.DKClient;
+import eu.zoho.chaotx.doppelkopf.game.Game;
+import eu.zoho.chaotx.doppelkopf.game.Player;
+
+
 public class DKSession {
+    public static final int CLIENT_CNT = 4;
     public enum State{SUSPENDED, RUNNING, TERMINATED};
 
     private Game game;
-    private Status state;
+    private State state;
     private Thread thread;
-    private DKClient[] clients;
+    private Map<Player, DKClient> clientMap;
 
 
-    public DKSession(DKClient c1, DKClient c2, DKClient c3, DKClient c4) {
-        clients = new DKClient[]{c1, c2, c3, c4};
+    public DKSession(DKClient[] someclients) {
+        // TODO throw exception if someclients.length != CLIENT_CNT
         state = SUSPENDED;
+        clientMap = new HashMap<>(CLIENT_CNT);
 
-        game = new Game(new Player[]{
-                new Player(c1.getUsername()),
-                new Player(c2.getUsername()),
-                new Player(c3.getUsername()),
-                new Player(c4.getUsername())
-            }, new Board()
-        );
+        for(DKClient client : someclients)
+            clientMap.put(new Player(client.getUser(), client.getConnector()), client);
+
+        game = new Game(clientMap.keySet().toArray(new Player[0]), new Board());
     }
     
     public Client[] getClients() {
@@ -29,14 +36,15 @@ public class DKSession {
     public void start() {
         state = RUNNING;
         thread = new Thread(game);
+        thread.setDaemon(true);
         thread.start();
     }
 
     public void check() {
-        state = thread.isAlive() ? TERMINATED : RUNNING;
+        state = thread.isAlive() ? TERMINATED : state;
     }
 
-    public Status getState() {
-
+    public State getState() {
+        return state;
     }
 }
