@@ -27,7 +27,7 @@ public class Game implements Runnable {
      * Schritte:
      *  1. Karten werden (gemischt) verteilt (Player.addToHand(Card)) (aus Card array entfernen?)
      *  2. Player array wird umsortiert (team1 an index 0 und 1)
-     *  3. Der erste Spieler wird bestimmt (siehe Regeln)
+     *  3. Der erste Spieler wird bestimmt (siehe Regeln) -> zufall
      *      -> seinen index im player-array zwischenspeichern
      *      -> nextplayer = 0 setzen
      *  4. Sitzfolge wird festgelegt (nicht die Reihenfolge im player-array!)

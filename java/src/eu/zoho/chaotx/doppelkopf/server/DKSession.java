@@ -1,4 +1,4 @@
-package eu.zoho.chaotx.doppelkopf.server;
+        package eu.zoho.chaotx.doppelkopf.server;
 
 import java.util.HashMap;
 import java.util.Map;
