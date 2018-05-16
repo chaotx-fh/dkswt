@@ -1,4 +1,4 @@
-package eu.zoho.chaotx.doppelkopf.game;
+package eu.zoho.chaotx.doppelkopf.server.game;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Stack;
 
 
 public class Game implements Runnable {
-    private Player[] player; // 1d arrays sind schneller und flexibler -> first 2 players are team 1
+    private Player[] player; // 1d arrays sind schneller und flexibler -> zwischen den teams befindet sich ein null-Element
     private Card[] cards;
     //private Board board; // brauchen wa echt ne eigene Klasse fürs board?
 
@@ -26,7 +26,7 @@ public class Game implements Runnable {
     /**
      * Schritte:
      *  1. Karten werden (gemischt) verteilt (Player.addToHand(Card)) (aus Card array entfernen?)
-     *  2. Player array wird umsortiert (team1 an index 0 und 1)
+     *  2. Player array wird umsortiert (team1 an index 0 und ggf. 1)
      *  3. Der erste Spieler wird bestimmt (siehe Regeln)
      *      -> seinen index im player-array zwischenspeichern
      *      -> nextplayer = 0 setzen
@@ -35,7 +35,7 @@ public class Game implements Runnable {
      *         die indexe der anderen Spieler werden daraufhin in zufälliger Reihenfolge dem table-array hinzugefügt
      * 
      * Ziel:
-     *  - player-array mit den Spielern aus team1 an index 0, 1 (analog team2 an 2, 3)
+     *  - player-array mit den Spielern aus team1 an index 0 (und ggf. 1) gefolgt von null-Element und team2
      *  - table-array mit den player-indexen in zufälliger Reihenfolge (z.B. {0, 3, 1, 2})
      *  - alle Karten wurden zufällig aber gleichmäßig an alle Spieler ausgeteilt
      */
@@ -78,11 +78,11 @@ public class Game implements Runnable {
     }
 
     private void doTurn() {
-        Player player = table[nextplayer];
-        Card play = player.getNextPlay(); // blockiert -> wartet auf Antwort vom Client -> yield (TODO!)
+        Player current_player = player[table[nextplayer]];
+        Card play = current_player.getNextPlay(); // blockiert -> wartet auf Antwort vom Client -> yield (TODO!)
 
         if(checkPlay(new Card[]{play, board.peek()})) {
-            play(player, play);
+            play(current_player, play);
             nextplayer = (nextplayer+1)%table.length;
         } else {
             // sende Fehlermeldung an Client
@@ -91,6 +91,7 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
+        init();
         running = true;
 
         while(running)

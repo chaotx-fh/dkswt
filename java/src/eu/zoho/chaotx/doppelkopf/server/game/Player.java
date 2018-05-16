@@ -1,6 +1,6 @@
-package eu.zoho.chaotx.doppelkopf.game;
+package eu.zoho.chaotx.doppelkopf.server.game;
 
-import eu.zoho.chaotx.doppelkopf.util.DKConnector;
+import eu.zoho.chaotx.doppelkopf.server.util.DKConnector;
 
 
 public class Player{
@@ -10,10 +10,6 @@ public class Player{
     private Card[] hand;
     private Card[] pile; // Ablagestapel
     private DKConnector connector;
-
-    public Player() {
-        this(null);
-    }
 
     public Player(Card[] inithand, DKConnector someconnector) {
         // TODO throw exception if inithand.length > MAX_HAND
@@ -56,7 +52,7 @@ public class Player{
         for(int i = 0; i < hand.length; ++i) {
             if(somecard == hand[i]) {
                 hand[i] = null;
-                return card;
+                return somecard;
             }
         }
 

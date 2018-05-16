@@ -1,4 +1,4 @@
-package eu.zoho.chaotx.doppelkopf.util;
+package eu.zoho.chaotx.doppelkopf.server.util;
 
 
 public interface DKConnector {

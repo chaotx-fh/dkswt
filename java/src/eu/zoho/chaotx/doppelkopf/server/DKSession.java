@@ -3,9 +3,9 @@ package eu.zoho.chaotx.doppelkopf.server;
 import java.util.HashMap;
 import java.util.Map;
 
-import eu.zoho.chaotx.doppelkopf.client.DKClient;
-import eu.zoho.chaotx.doppelkopf.game.Game;
-import eu.zoho.chaotx.doppelkopf.game.Player;
+import eu.zoho.chaotx.doppelkopf.server.game.Card;
+import eu.zoho.chaotx.doppelkopf.server.game.Game;
+import eu.zoho.chaotx.doppelkopf.server.game.Player;
 
 
 public class DKSession {
@@ -15,33 +15,22 @@ public class DKSession {
     private Game game;
     private State state;
     private Thread thread;
-    private Map<Player, DKClient> clientMap;
 
 
-    public DKSession(DKClient[] someclients) {
-        // TODO throw exception if someclients.length != CLIENT_CNT
-        state = SUSPENDED;
-        clientMap = new HashMap<>(CLIENT_CNT);
-
-        for(DKClient client : someclients)
-            clientMap.put(new Player(client.getUser(), client.getConnector()), client);
-
-        game = new Game(clientMap.keySet().toArray(new Player[0]), new Board());
-    }
-    
-    public Client[] getClients() {
-        return clients;
+    public DKSession() {
+        state = State.SUSPENDED;
+        game = new Game(new Player[0], new Card[0]);
     }
 
     public void start() {
-        state = RUNNING;
+        state = State.RUNNING;
         thread = new Thread(game);
         thread.setDaemon(true);
         thread.start();
     }
 
     public void check() {
-        state = thread.isAlive() ? TERMINATED : state;
+        state = thread.isAlive() ? State.TERMINATED : state;
     }
 
     public State getState() {

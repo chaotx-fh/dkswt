@@ -1,4 +1,4 @@
-package eu.zoho.chaotx.doppelkopf.game;
+package eu.zoho.chaotx.doppelkopf.server.game;
 
 
 public interface Condition {
