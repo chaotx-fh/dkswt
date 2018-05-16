@@ -9,7 +9,7 @@ public class Card {
         HEART, DIAMOND, SPADE,CLUB
     }//HEART = Herz, DIAMOND = Karo, SPADE = Pik ,CLUB = Kreuz
     
-    public Card() {
-
+    public Card(int value) {
+        this.value = value;
     }
 }
