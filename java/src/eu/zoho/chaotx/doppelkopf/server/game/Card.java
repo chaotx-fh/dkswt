@@ -29,14 +29,35 @@ public class Card {
     };
 
     private int rank, points;
+    private Symbol symbol;
+    private Value value;
 
-    public Card(Symbol symbol, Value value) {
-        if(symbol ==  Symbol.HEART && value == Value.TEN)
-            rank = 16;
-        
-        if(symbol == Symbol.SPADE || symbol == Symbol.CLUB || symbol == Symbol.HEART)
-            rank = symbol.numval() + value.numval();
-        else
-            rank = symbol.numval() + value.numval() + 4;
+    public Card (Symbol symbol, Value value){
+        this.symbol=symbol;
+        this.value=value;
+        if(symbol!=DIMOND && (value==(symbol==HEART? value: TEN)||value==ACE || value==KING||value==NINE)) {
+            
+            rank =value.numval();
+        }else{
+            rank= symbol==HEARTS &&value ==TEN ? 16 : value.numval()+symbol.numval()+4;
+        }
+        points=value==NINE ? 0: value==JACK ? 2 : value==QUEEN ? 3 : value== KING ? 4 :value== TEN ? 10 : 11;
     }
+
+    public Symbol getSymbol(){
+        return symbol;
+    }
+
+    public Value getValue(){
+        return value;
+    }
+    
+    public int getRank(){
+        return rank;
+    }
+    
+    public int getPoints(){
+        return points;
+    }
+
 }
