@@ -2,25 +2,41 @@ package eu.zoho.chaotx.doppelkopf.server.game;
 
 // TODO
 public class Card {
-    
-    private int rating,points;
-;
+    public enum Symbol {
+        DIAMOND(0), HEART(1), SPADE(2), CLUB(3);
+        private int value;
 
-    public enum Symbol{
-        HEART = 1, DIAMOND = 0, SPADE = 2,CLUB = 3
-    }//HEART = Herz, DIAMOND = Karo, SPADE = Pik ,CLUB = Kreuz
-    
-    public enum Value{
-        NINE = 0, KING = 1 ,TEN = 2,ACE = 3,JACK = 4,QUEEN = ()
-    }
+        Symbol(int someval) {
+            value = someval;
+        }
 
-    public Card(Symbol s, Value v) {
-        if(s = TEN && v = HEART)
-            rating = 20;
+        public int numval() {
+            return value;
+        }
+    };
+
+    public enum Value {
+        NINE(0), KING(1), TEN(2), ACE(3), JACK(4), QUEEN(8);
+        private int value;
+
+        Value(int someval) {
+            value = someval;
+        }
+
+        public int numval() {
+            return value;
+        }
+    };
+
+    private int rank, points;
+
+    public Card(Symbol symbol, Value value) {
+        if(symbol ==  Symbol.HEART && value == Value.TEN)
+            rank = 16;
         
-        if(s = CROSS || CLUB || HEART){
-           rating = s + v;
-        }else
-            rating = v + s + 4;
+        if(symbol == Symbol.SPADE || symbol == Symbol.CLUB || symbol == Symbol.HEART)
+            rank = symbol.numval() + value.numval();
+        else
+            rank = symbol.numval() + value.numval() + 4;
     }
 }

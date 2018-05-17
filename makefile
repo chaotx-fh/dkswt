@@ -1,12 +1,26 @@
+#################################
+## detect os and set functions ##
+#################################
+ifeq ($(OS), Windows_NT)
+	_LS = dir /B /S
+	_RM = rmdir /S /Q
+	_SETSEP = $(subst /,\, $(1))
+else
+	_LS = ls
+	_RM = rm -r
+	_SETSEP = $(subst \,/, $(1))
+endif
+
+############
 ## config ##
 ############
 # file title
 _ServerTitle = dkserver
 _ClientTitle = dkclient
 
-# src root
-_ServerRoot = java\src\eu\zoho\chaotx\doppelkopf\server
-_ClientRoot = java\src\eu\zoho\chaotx\doppelkopf\client
+# source root
+_ServerRoot = $(call _SETSEP, java/src/eu/zoho/chaotx/doppelkopf/server)
+_ClientRoot = $(call _SETSEP, java/src/eu/zoho/chaotx/doppelkopf/client)
 
 # main class
 _ServerMain = eu.zoho.chaotx.doppelkopf.server.DKServer
@@ -14,19 +28,21 @@ _ClientMain = eu.zoho.chaotx.doppelkopf.client.DKClient
 
 # output directory
 _BuildDir = build
-_JarDir = $(_BuildDir)\jar
+_JarDir = $(call _SETSEP, $(_BuildDir)/jar)
 
 # classes directory
-_ClassesDir = $(_BuildDir)\classes
-_ServerDir = $(_BuildDir)\classes\server
-_ClientDir = $(_BuildDir)\classes\client
+_ClassesDir = $(call _SETSEP, $(_BuildDir)/classes)
+_ServerDir = $(call _SETSEP, $(_BuildDir)/classes/server)
+_ClientDir = $(call _SETSEP, $(_BuildDir)/classes/client)
 
+#########################
 ## automatic generated ##
 #########################
 # classes
-_ServerClasses := $(shell dir /B /S $(_ServerRoot)\*.java)
-_ClientClasses := $(shell dir /B /S $(_ClientRoot)\*.java)
+_ServerClasses := $(shell $(_LS) $(call _SETSEP, $(_ServerRoot)/*.java))
+_ClientClasses := $(shell $(_LS) $(call _SETSEP, $(_ClientRoot)/*.java))
 
+##############
 ## commands ##
 ##############
 # output directory
@@ -48,18 +64,18 @@ compileclient: clientdir
 
 # build jar
 serverjar: outputdir compileserver
-	jar cvfe $(_JarDir)\$(_ServerTitle).jar $(_ServerMain) -C $(_ServerDir) .
+	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) -C $(_ServerDir) .
 
 clientjar: outputdir compileclient
-	jar cvfe $(_JarDir)\$(_ClientTitle).jar $(_ClientMain) -C $(_ClientDir) .
+	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) -C $(_ClientDir) .
 
 # run jar
 runserver: serverjar
-	java -jar $(_JarDir)\$(_ServerTitle).jar
+	java -jar $(call _SETSEP, $(_JarDir)/$(_ServerTitle).jar)
 
 runclient: clientjar
-	java -jar $(_JarDir)\$(_ClientTitle).jar
+	java -jar $(call _SETSEP, $(_JarDir)/$(_ClientTitle).jar)
 
 # clean up
 clean:
-	rmdir /S /Q $(_BuildDir)
+	$(_RM) $(_BuildDir)
