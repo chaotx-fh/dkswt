@@ -11,6 +11,7 @@ public class Game implements Runnable {
     private Card[] cards;
     //private Board board; // brauchen wa echt ne eigene Klasse fürs board?
 
+
     private Stack<Card> board;
     private int[] table; // enthält Player indexe sortiert nach Sitzordnung
     private int nextplayer; // zeiger welcher auf den aktuellen Spieler im table-array zeigt
@@ -19,8 +20,10 @@ public class Game implements Runnable {
     public Game(Player[] someplayer, Card[] somecards) {
         player = someplayer;
         cards = somecards;
+        table = new int [] {-1,-1,-1,-1};
         //board = someboard;
         board = new Stack<>();
+
     }
 
     /**
@@ -40,6 +43,58 @@ public class Game implements Runnable {
      *  - alle Karten wurden zufällig aber gleichmäßig an alle Spieler ausgeteilt
      */
     private void init() {
+        Player[] teamplayer = new Player[5];
+
+        int cp, nnc;
+        int cc = 0;
+        while(cc != cards.length){
+            if(player[cp = (int)Math.random()*4].getHand().length < cards.length/4){
+                if(cards[nnc =Math.random()*48] != null){
+                    player[cp].addToHand(cards[nnc]);
+                    if(/*cards[nnc].getSymbol() == Club && cards[nnc].getValue() == QUEEN */ true){
+                        if(teamplayer[0] != null){
+                            if(teamplayer[0] == player[cp]){
+                                teamplayer[1] = null;
+                                for(int i = 0 ; i < player.length; ++i){
+                                    int j = 0;
+                                    if(player[i] != player[cp]){
+                                        teamplayer[j++ +2] = player[i];
+                                    }
+                                }
+                            }else{
+                                teamplayer[1] = player[cp];
+                                teamplayer[2] = null;
+                                int j = 0;
+                                for(int i = 0 ; i < player.length ; ++i ){
+                                    if((player[i] != teamplayer[0]) && (player[i] != teamplayer[1])){
+                                        teamplayer[j++ +3] = player[i];
+                                    }
+                                }
+                            }
+                        }else{
+                            teamplayer[0] = player[cp];
+                        }
+                    }
+                    cards[nnc] = null;
+                    ++cc;
+                }
+            }
+        }
+
+
+        int tmp = (int)(Math.random()*100)%4;
+        table[tmp] = player[0] ;
+
+        for(int i = 1 ; i < player.length ; ++i){
+
+           do{
+            
+            tmp = (int)(Math.random()*100)%4;
+
+           }while(table[tmp] == -1 );
+            table[tmp] = i ;
+            
+        }
 
     }
 

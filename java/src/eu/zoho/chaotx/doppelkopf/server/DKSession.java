@@ -30,7 +30,7 @@ public class DKSession {
     }
 
     public void check() {
-        state = thread.isAlive() ? State.TERMINATED : state;
+        state = thread.isAlive() ? state : State.TERMINATED;
     }
 
     public State getState() {
