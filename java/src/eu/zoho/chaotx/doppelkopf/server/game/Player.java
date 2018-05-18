@@ -1,21 +1,19 @@
 package eu.zoho.chaotx.doppelkopf.server.game;
 
-import eu.zoho.chaotx.doppelkopf.server.util.DKConnector;
-
+import eu.zoho.chaotx.doppelkopf.server.session.User;
 
 public class Player{
     private static final int MAX_HAND = 48;
 
     private int nextplay;
+    private User user;
     private Card[] hand;
     private Card[] pile; // Ablagestapel
-    private DKConnector connector;
 
-    public Player(Card[] inithand, DKConnector someconnector) {
-        // TODO throw exception if inithand.length > MAX_HAND
-        hand = inithand == null ? new Card[MAX_HAND] : inithand;
+    public Player(User someuser) {
+        user = someuser;
+        hand = new Card[MAX_HAND];
         pile = new Card[MAX_HAND];
-        connector = someconnector;
     }
 
     public Card[] getHand() {
@@ -60,6 +58,6 @@ public class Player{
     }
 
     public Card getNextPlay() {
-        return hand[connector.requestInt()];
+        return hand[user.request()];
     }
 }
