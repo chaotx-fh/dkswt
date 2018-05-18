@@ -8,6 +8,7 @@ ifeq ($(OS), Windows_NT)
 else
 	_LS = ls
 	_RM = rm -r
+	_MK = mkdir -p
 	_SETSEP = $(subst \,/, $(1))
 endif
 
@@ -47,17 +48,17 @@ _ClientClasses := $(shell $(_LS) $(call _SETSEP, $(_ClientRoot)/*.java))
 ##############
 # output directory
 outputdir:
-	mkdir $(_JarDir)
+	$(_MK) $(_JarDir)
 
 serverdir: outputdir
-	mkdir $(_ServerDir)
+	$(_MK) $(_ServerDir)
 
 clientdir: outputdir
-	mkdir $(_ClientDir)
+	$(_MK) $(_ClientDir)
 
 # compile output
 compileserver: serverdir
-	javac -d $(_ServerDir) $(_ServerClasses)
+	javac -d build/classes/server $(_ServerClasses)
 
 compileclient: clientdir
 	javac -d $(_ClientDir) $(_ServerClasses)
