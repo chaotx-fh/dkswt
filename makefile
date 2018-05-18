@@ -2,15 +2,14 @@
 ## detect os and set functions ##
 #################################
 ifeq ($(OS), Windows_NT)
-	_LS = dir /B /S
 	_RM = rmdir /S /Q
 	_MK = -mkdir $(subst /,\, $(1))
-#	_MK = $(shell IF NOT EXIST $(1) mkdir $(subst /,\, $(1)))
+	_LS = dir /B /S $(subst /,\, $(1)/*.java)
 	_SETSEP = $(subst /,\, $(1))
 else
-	_LS = ls
 	_RM = rm -r
-	_MK = mkdir -p $(subst /,\, $(1))
+	_MK = mkdir -p $(subst \,/, $(1))
+	_LS = find $(subst \,/, $(1)) -name '*.java'
 	_SETSEP = $(subst \,/, $(1))
 endif
 
@@ -41,9 +40,8 @@ _ClientDir = $(_BuildDir)/classes/client
 #########################
 ## automatic generated ##
 #########################
-# classes
-_ServerClasses := $(shell $(_LS) $(call _SETSEP, $(_ServerRoot)/*.java))
-_ClientClasses := $(shell $(_LS) $(call _SETSEP, $(_ClientRoot)/*.java))
+_ServerClasses := $(shell $(call _LS, $(_ServerRoot)))
+_ClientClasses := $(shell $(call _LS, $(_ClientRoot)))
 
 ##############
 ## commands ##
