@@ -35,13 +35,13 @@ public class Card {
     public Card (Symbol symbol, Value value){
         this.symbol=symbol;
         this.value=value;
-        if(symbol!=DIMOND && (value==(symbol==HEART? value: TEN)||value==ACE || value==KING||value==NINE)) {
-            
-            rank =value.numval();
-        }else{
-            rank= symbol==HEARTS &&value ==TEN ? 16 : value.numval()+symbol.numval()+4;
+        if(symbol != Symbol.DIAMOND && (value == (symbol == Symbol.HEART ? value : Value.TEN) || value == Value.ACE || value == Value.KING || value == Value.NINE)) {
+            rank = value.numval();
+        } else {
+            rank = symbol == Symbol.HEART && value == Value.TEN ? 16 : value.numval()+symbol.numval()+4;
         }
-        points=value==NINE ? 0: value==JACK ? 2 : value==QUEEN ? 3 : value== KING ? 4 :value== TEN ? 10 : 11;
+
+        points = value == Value.NINE ? 0 : value == Value.JACK ? 2 : value == Value.QUEEN ? 3 : value == Value.KING ? 4 : value == Value.TEN ? 10 : 11;
     }
 
     public Symbol getSymbol(){
