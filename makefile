@@ -4,10 +4,13 @@
 ifeq ($(OS), Windows_NT)
 	_LS = dir /B /S
 	_RM = rmdir /S /Q
+	_MK = -mkdir $(subst /,\, $(1))
+#	_MK = $(shell IF NOT EXIST $(1) mkdir $(subst /,\, $(1)))
 	_SETSEP = $(subst /,\, $(1))
 else
 	_LS = ls
 	_RM = rm -r
+	_MK = mkdir -p $(subst /,\, $(1))
 	_SETSEP = $(subst \,/, $(1))
 endif
 
@@ -19,8 +22,8 @@ _ServerTitle = dkserver
 _ClientTitle = dkclient
 
 # source root
-_ServerRoot = $(call _SETSEP, java/src/eu/zoho/chaotx/doppelkopf/server)
-_ClientRoot = $(call _SETSEP, java/src/eu/zoho/chaotx/doppelkopf/client)
+_ServerRoot = java/src/eu/zoho/chaotx/doppelkopf/server
+_ClientRoot = java/src/eu/zoho/chaotx/doppelkopf/client
 
 # main class
 _ServerMain = eu.zoho.chaotx.doppelkopf.server.DKServer
@@ -28,12 +31,12 @@ _ClientMain = eu.zoho.chaotx.doppelkopf.client.DKClient
 
 # output directory
 _BuildDir = build
-_JarDir = $(call _SETSEP, $(_BuildDir)/jar)
+_JarDir = $(_BuildDir)/jar
 
 # classes directory
-_ClassesDir = $(call _SETSEP, $(_BuildDir)/classes)
-_ServerDir = $(call _SETSEP, $(_BuildDir)/classes/server)
-_ClientDir = $(call _SETSEP, $(_BuildDir)/classes/client)
+_ClassesDir = $(_BuildDir)/classes
+_ServerDir = $(_BuildDir)/classes/server
+_ClientDir = $(_BuildDir)/classes/client
 
 #########################
 ## automatic generated ##
@@ -47,26 +50,29 @@ _ClientClasses := $(shell $(_LS) $(call _SETSEP, $(_ClientRoot)/*.java))
 ##############
 # output directory
 outputdir:
-	mkdir $(_JarDir)
+	$(call _MK, $(_BuildDir))
+
+jardir: outputdir
+	$(call _MK, $(_JarDir))
 
 serverdir: outputdir
-	mkdir $(_ServerDir)
+	$(call _MK, $(_ServerDir))
 
 clientdir: outputdir
-	mkdir $(_ClientDir)
+	$(call _MK, $(_ClientDir))
 
 # compile output
 compileserver: serverdir
 	javac -d $(_ServerDir) $(_ServerClasses)
 
 compileclient: clientdir
-	javac -d $(_ClientDir) $(_ServerClasses)
+	javac -d $(_ClientDir) $(_ClientClasses)
 
 # build jar
-serverjar: outputdir compileserver
+serverjar: jardir compileserver
 	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) -C $(_ServerDir) .
 
-clientjar: outputdir compileclient
+clientjar: jardir compileclient
 	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) -C $(_ClientDir) .
 
 # run jar

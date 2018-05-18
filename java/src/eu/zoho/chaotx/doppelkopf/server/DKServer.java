@@ -1,14 +1,18 @@
 package eu.zoho.chaotx.doppelkopf.server;
 
+import eu.zoho.chaotx.doppelkopf.server.session.SessionManager;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 class DKServer {
     public static void main(String[] args) {
-        /*
-        try(ServerSocket server = new ServerSocket(58089)) {
+        System.out.println("Server running");
+
+        try(ServerSocket server = new ServerSocket(80)) {
             while(true) {
                 Socket client = server.accept();
                 new Thread(() -> handleConnection(client)) {{
@@ -18,18 +22,15 @@ class DKServer {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        */
-        System.out.println("Hello Mothafucka");
     }
 
     private static void handleConnection(Socket client) {
-        int cmd;
+        try(Scanner sc = new Scanner(client.getInputStream())) {
+            String user = sc.hasNextLine() ? sc.nextLine() : "anonymous";
+            String password = sc.hasNextLine() ? sc.nextLine() : "1234";
+            System.out.println("server: Hello " + user + ", your password is " + password);
 
-        try(InputStream is = client.getInputStream()) {
-            while((cmd = is.read()) >= 0)
-                System.out.print(cmd + ",");
-
-            System.out.println();
+            SessionManager.addClient(client, user);
         } catch(IOException e) {
             e.printStackTrace();
         }
