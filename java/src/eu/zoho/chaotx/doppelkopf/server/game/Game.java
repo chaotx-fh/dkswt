@@ -151,5 +151,7 @@ public class Game implements Runnable {
 
         while(running)
             doTurn();
+
+        System.out.println("Game finished");
     }
 }
