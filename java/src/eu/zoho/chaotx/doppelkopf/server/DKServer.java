@@ -1,5 +1,6 @@
 package eu.zoho.chaotx.doppelkopf.server;
 
+import eu.zoho.chaotx.doppelkopf.server.connect.Protocol;
 import eu.zoho.chaotx.doppelkopf.server.session.SessionManager;
 
 import java.io.IOException;
@@ -15,6 +16,18 @@ class DKServer {
         try(ServerSocket server = new ServerSocket(80)) {
             while(true) {
                 Socket client = server.accept();
+                new Thread(() -> SessionManager.addClient(client)) {{
+                    setDaemon(true);
+                }}.start();
+            }
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        try(ServerSocket server = new ServerSocket(80)) {
+            while(true) {
+                Socket client = server.accept();
                 new Thread(() -> handleConnection(client)) {{
                     setDaemon(true);
                 }}.start();
@@ -22,8 +35,10 @@ class DKServer {
         } catch(IOException e) {
             e.printStackTrace();
         }
+        //*/
     }
 
+    /*
     private static void handleConnection(Socket client) {
         try(Scanner sc = new Scanner(client.getInputStream())) {
             String user = sc.hasNextLine() ? sc.nextLine() : "anonymous";
@@ -35,4 +50,5 @@ class DKServer {
             e.printStackTrace();
         }
     }
+    */
 }

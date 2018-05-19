@@ -5,12 +5,12 @@ ifeq ($(OS), Windows_NT)
 	_RM = rmdir /S /Q
 	_MK = -mkdir $(subst /,\, $(1))
 	_LS = dir /B /S $(subst /,\, $(1)/*.java)
-	_SETSEP = $(subst /,\, $(1))
+	_PATH = $(subst /,\, $(1))
 else
 	_RM = rm -r
 	_MK = mkdir -p $(subst \,/, $(1))
 	_LS = find $(subst \,/, $(1)) -name '*.java'
-	_SETSEP = $(subst \,/, $(1))
+	_PATH = $(subst \,/, $(1))
 endif
 
 ############
@@ -40,6 +40,7 @@ _ClientDir = $(_BuildDir)/classes/client
 #########################
 ## automatic generated ##
 #########################
+# classes
 _ServerClasses := $(shell $(call _LS, $(_ServerRoot)))
 _ClientClasses := $(shell $(call _LS, $(_ClientRoot)))
 
@@ -68,17 +69,17 @@ compileclient: clientdir
 
 # build jar
 serverjar: jardir compileserver
-	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) -C $(_ServerDir) .
+	jar cvfe $(call _PATH, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) -C $(_ServerDir) .
 
 clientjar: jardir compileclient
-	jar cvfe $(call _SETSEP, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) -C $(_ClientDir) .
+	jar cvfe $(call _PATH, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) -C $(_ClientDir) .
 
 # run jar
 runserver: serverjar
-	java -jar $(call _SETSEP, $(_JarDir)/$(_ServerTitle).jar)
+	java -jar $(call _PATH, $(_JarDir)/$(_ServerTitle).jar)
 
 runclient: clientjar
-	java -jar $(call _SETSEP, $(_JarDir)/$(_ClientTitle).jar)
+	java -jar $(call _PATH, $(_JarDir)/$(_ClientTitle).jar)
 
 # clean up
 clean:

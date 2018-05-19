@@ -5,13 +5,12 @@ import eu.zoho.chaotx.doppelkopf.server.session.User;
 public class Player{
     private static final int MAX_HAND = 48;
 
-    private int nextplay;
-    private User user;
+    private String name;
     private Card[] hand;
     private Card[] pile; // Ablagestapel
 
-    public Player(User someuser) {
-        user = someuser;
+    public Player(String somename) {
+        name = somename;
         hand = new Card[MAX_HAND];
         pile = new Card[MAX_HAND];
     }
@@ -24,6 +23,19 @@ public class Player{
         return pile;
     }
 
+    /**
+     * @ Get card from player hand
+     * 
+     * @return card from hand or null if index is out of range
+     */
+    public Card getFromHand(int index) {
+        try {
+            return hand[index];
+        } catch(IndexOutOfBoundsException e) {
+            return null;
+        }
+    }
+
     public void addToHand(Card newcard) {
         for(int i = 0; i < hand.length; ++i) {
             if(hand[i] == null) {
@@ -33,6 +45,19 @@ public class Player{
         }
         
         // TODO throw exception if hand is full
+    }
+
+    /**
+     * @ Get card from player pile
+     * 
+     * @return card from pile or null if index is out of range
+     */
+    public Card getFromPile(int index) {
+        try {
+            return pile[index];
+        } catch(IndexOutOfBoundsException e) {
+            return null;
+        }
     }
 
     public void addToPile(Card somecard) {
@@ -57,7 +82,14 @@ public class Player{
         return null;
     }
 
+    /* deprecated
     public Card getNextPlay() {
-        return hand[user.request()];
+        return 43;//hand[user.request()];
+    }
+    //*/
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

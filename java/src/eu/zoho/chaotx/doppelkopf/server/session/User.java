@@ -1,21 +1,26 @@
 package eu.zoho.chaotx.doppelkopf.server.session;
 
-import eu.zoho.chaotx.doppelkopf.server.util.IntRequester;
+import java.net.Socket;
 
 public class User {
-    private String name;
-    private IntRequester requester;
+    private String username, password;
+    private Socket client;
 
-    public User(String somename, IntRequester somerequester) {
-        name = somename;
-        requester = somerequester;
+    public User(String somename, String somepassword, Socket someclient) {
+        client = someclient;
+        username = somename;
+        password = somepassword;
     }
 
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
-    public int request() {
-        return requester.requestInt();
+    public String getPassword() {
+        return password;
+    }
+
+    public Socket getClient() {
+        return client;
     }
 }

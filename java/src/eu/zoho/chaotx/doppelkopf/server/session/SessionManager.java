@@ -2,57 +2,54 @@ package eu.zoho.chaotx.doppelkopf.server.session;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Scanner;
+
+import eu.zoho.chaotx.doppelkopf.server.connect.Protocol;
 
 
 public class SessionManager {
-    private static final int MAX_CLIENTS = 2;
-    private static final User[] room = new User[MAX_CLIENTS];
-    private static final List<Session> sessions = new LinkedList<>();
+    private static final int MAX_USER = 2;
+    private static final User[] room = new User[MAX_USER];
+    private static final Protocol protocol = new Protocol();
 
-
-    public static void addSession(Session session) {
-        sessions.add(session);
+    static {
+        initProtocol();
     }
 
-    public static void addClient(Socket client, String user) {
-        final Socket final_client = client;
+    public static void addClient(Socket client) {
+        protocol.getHandler("dk_connect").handle(client);
+    }
 
-        int index = 0;
-        for(; index < room.length && room[index] != null; ++index);
+    // TODO serialize
+    private static void initProtocol() {
+        protocol.setHandler("dk_connect", (client) -> {
+            String username, password;
 
-        room[index] = new User(user, () -> {
-            try {
-                return final_client.getInputStream().read();
+            try(Scanner sc = new Scanner(client.getInputStream())) {
+                username = sc.nextLine();
+                password = sc.nextLine();
             } catch(IOException e) {
                 e.printStackTrace();
-                return -1;
+                username = "anonymous";
+                password = "1234";
+            }
+
+            // TODO validate user (db)
+
+            int index = 0;
+            for(; index < room.length && room[index] != null; ++index);
+            room[index] = new User(username, password, client);
+            System.out.println("server: " + username + " entered waiting room");
+    
+            if(index+1 == MAX_USER) {
+                System.out.println("server: room full, starting game");
+    
+                new Thread(new Session(room)) {{
+                    setDaemon(true);
+                }}.start();
+                Arrays.fill(room, null);
             }
         });
-
-        if(index+1 == MAX_CLIENTS) {
-            //sessions.add(new Session(room));
-            new Session(room).start();
-            Arrays.fill(room, null);
-        }
-    }
-
-    public static void runSessions() {
-        for(Session session : sessions) {
-            switch(session.getState()) {
-                case SUSPENDED:
-                    session.start();
-                    break;
-                case RUNNING:
-                    session.check();
-                    break;
-                case TERMINATED:
-                    sessions.remove(session);
-                    break;
-            }
-        }
     }
 }
