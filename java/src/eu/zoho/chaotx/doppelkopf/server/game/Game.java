@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Stack;
+import java.util.Arrays;
 
 
 public class Game implements Runnable {
@@ -43,6 +44,28 @@ public class Game implements Runnable {
 
     }
 
+    private void validate(){     
+        int count = 0;
+
+        for(int i = 0; i < Player.MAX_HAND; i++ ){
+            if((board.get(0).getSymbol == Symbol.HEART && board.get(0).getValue == Value.TEN) ? return : (board.get(0).getSymbol() == Value.ACE || Value.KING || Value.TEN)) { //Fehl
+                if(player.hand[i].getSymbol == board.get(0).getSymbol)
+                    valid_plays[i] = true;
+                    return;
+            }else if(player.hand[i].getSymbol == board.get(0).getSymbol){ //Trumpf
+                    valid_plays[i] = true;
+            }else
+                count++;
+        }
+
+        if(count == Player.MAX_HAND){
+            Arrays.fill(valid_plays,true);
+        }
+
+        return valid_plays[player[nextplayer].getNextPlay];
+        
+    }
+
     /**
      * TODO
      * so wie die Dinge gerade stehen befindet sich an index 0 die Karte die gespielt
@@ -51,8 +74,19 @@ public class Game implements Runnable {
      * 
      * @return boolean - true if play is valid, false otherwise
      */
-    private boolean checkPlay(Card[] somecards) {
-        return true;
+    private boolean checkPlay() {
+        /**
+        *Schritt 1: Symbol der erst gespielten Karte merken
+        *Schritt 2: Deck des zuspielenden Spielers überprüfen ob er dieses Symbol hat (Wenn ja spiel Sie, wenn nein Spiel beliebige Karte)
+        */
+
+        return valid_plays[player[nextplayer].getNextPlay];
+        
+        
+        if(player.getNextPlay.getSymbol == board.get(0).getSymbol)
+                return true;
+            else
+                return false;
     }
 
     /**

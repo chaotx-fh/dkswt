@@ -3,7 +3,7 @@ package eu.zoho.chaotx.doppelkopf.server.game;
 import eu.zoho.chaotx.doppelkopf.server.session.User;
 
 public class Player{
-    private static final int MAX_HAND = 48;
+    public static final int MAX_HAND = 48;
 
     private int nextplay;
     private User user;

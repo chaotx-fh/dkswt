@@ -40,6 +40,7 @@ _ClientDir = $(_BuildDir)/classes/client
 #########################
 ## automatic generated ##
 #########################
+# classes
 _ServerClasses := $(shell $(call _LS, $(_ServerRoot)))
 _ClientClasses := $(shell $(call _LS, $(_ClientRoot)))
 
@@ -58,7 +59,7 @@ serverdir: outputdir
 
 clientdir: outputdir
 	$(call _MK, $(_ClientDir))
-	
+
 # compile output
 compileserver: serverdir
 	javac -d build/classes/server $(_ServerClasses)
