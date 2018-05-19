@@ -53,16 +53,22 @@ _ClientClasses := $(shell $(call _LS,$(_ClientRoot),*.java))
 ##############
 # output directory
 outputdir:
-	$(call _MK, $(_BuildDir))
+	$(call _MK,$(_BuildDir))
+
+serverres:
+	$(call _MK,$(_ServerRes))
+
+clientres:
+	$(call _MK,$(_ClientRes))
 
 jardir: outputdir
-	$(call _MK, $(_JarDir))
+	$(call _MK,$(_JarDir))
 
 serverdir: outputdir
-	$(call _MK, $(_ServerDir))
+	$(call _MK,$(_ServerDir))
 
 clientdir: outputdir
-	$(call _MK, $(_ClientDir))
+	$(call _MK,$(_ClientDir))
 
 # compile output
 compileserver: serverdir
@@ -72,18 +78,18 @@ compileclient: clientdir
 	javac -d $(_ClientDir) $(_ClientClasses)
 
 # build jar
-serverjar: jardir compileserver
-	jar cvfe $(call _PATH, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) $(call _PATH, $(_ServerRes)) -C $(_ServerDir) .
+serverjar: jardir compileserver serverres
+	jar cvfe $(call _PATH,$(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) $(call _PATH,$(_ServerRes)) -C $(_ServerDir) .
 
-clientjar: jardir compileclient
-	jar cvfe $(call _PATH, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) $(call _PATH, $(_ClientRes)) -C $(_ClientDir) .
+clientjar: jardir compileclient clientres
+	jar cvfe $(call _PATH,$(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) $(call _PATH,$(_ClientRes)) -C $(_ClientDir) .
 
 # run jar
 runserver: serverjar
-	java -jar $(call _PATH, $(_JarDir)/$(_ServerTitle).jar)
+	java -jar $(call _PATH,$(_JarDir)/$(_ServerTitle).jar)
 
 runclient: clientjar
-	java -jar $(call _PATH, $(_JarDir)/$(_ClientTitle).jar)
+	java -jar $(call _PATH,$(_JarDir)/$(_ClientTitle).jar)
 
 # clean up
 clean:
