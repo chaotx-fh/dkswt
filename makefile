@@ -4,12 +4,12 @@
 ifeq ($(OS), Windows_NT)
 	_RM = rmdir /S /Q
 	_MK = -mkdir $(subst /,\, $(1))
-	_LS = dir /B /S $(subst /,\, $(1)/*.java)
+	_LS = dir /B /S $(subst /,\, $(1)/$(2))
 	_PATH = $(subst /,\, $(1))
 else
 	_RM = rm -r
 	_MK = mkdir -p $(subst \,/, $(1))
-	_LS = find $(subst \,/, $(1)) -name '*.java'
+	_LS = find $(subst \,/, $(1)) -name '$(2)'
 	_PATH = $(subst \,/, $(1))
 endif
 
@@ -21,8 +21,12 @@ _ServerTitle = dkserver
 _ClientTitle = dkclient
 
 # source root
-_ServerRoot = java/src/eu/zoho/chaotx/doppelkopf/server
-_ClientRoot = java/src/eu/zoho/chaotx/doppelkopf/client
+_ServerRoot = src/eu/zoho/chaotx/doppelkopf/server
+_ClientRoot = src/eu/zoho/chaotx/doppelkopf/client
+
+# ressources
+_ServerRes = res/server
+_ClientRes = res/client
 
 # main class
 _ServerMain = eu.zoho.chaotx.doppelkopf.server.DKServer
@@ -41,8 +45,8 @@ _ClientDir = $(_BuildDir)/classes/client
 ## automatic generated ##
 #########################
 # classes
-_ServerClasses := $(shell $(call _LS, $(_ServerRoot)))
-_ClientClasses := $(shell $(call _LS, $(_ClientRoot)))
+_ServerClasses := $(shell $(call _LS,$(_ServerRoot),*.java))
+_ClientClasses := $(shell $(call _LS,$(_ClientRoot),*.java))
 
 ##############
 ## commands ##
@@ -69,10 +73,10 @@ compileclient: clientdir
 
 # build jar
 serverjar: jardir compileserver
-	jar cvfe $(call _PATH, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) -C $(_ServerDir) .
+	jar cvfe $(call _PATH, $(_JarDir)/$(_ServerTitle).jar) $(_ServerMain) $(call _PATH, $(_ServerRes)) -C $(_ServerDir) .
 
 clientjar: jardir compileclient
-	jar cvfe $(call _PATH, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) -C $(_ClientDir) .
+	jar cvfe $(call _PATH, $(_JarDir)/$(_ClientTitle).jar) $(_ClientMain) $(call _PATH, $(_ClientRes)) -C $(_ClientDir) .
 
 # run jar
 runserver: serverjar
