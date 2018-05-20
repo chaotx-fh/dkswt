@@ -9,7 +9,7 @@ import java.util.List;
 
 
 public class SessionManager {
-    private static final int MAX_CLIENTS = 2;
+    private static final int MAX_CLIENTS = 4;
     private static final User[] room = new User[MAX_CLIENTS];
     private static final List<Session> sessions = new LinkedList<>();
 

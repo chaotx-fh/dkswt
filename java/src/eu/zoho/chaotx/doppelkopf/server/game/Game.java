@@ -2,7 +2,9 @@ package eu.zoho.chaotx.doppelkopf.server.game;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Stack;
 
 
@@ -45,11 +47,11 @@ public class Game implements Runnable {
     private void init() {
         Player[] teamplayer = new Player[5];
 
-        int cp, nnc;
-        int cc = 0;
+        int cp, nnc, cc = 0;
+        Random rng = new Random(System.nanoTime());
         while(cc != cards.length){
-            if(player[cp = (int)Math.random()*4].getHand().length < cards.length/4){
-                if(cards[nnc =Math.random()*48] != null){
+            if(player[cp = rng.nextInt(4)].getHand().length < cards.length/4){
+                if(cards[nnc = rng.nextInt(48)] != null){
                     player[cp].addToHand(cards[nnc]);
                     if(/*cards[nnc].getSymbol() == Club && cards[nnc].getValue() == QUEEN */ true){
                         if(teamplayer[0] != null){
@@ -80,22 +82,15 @@ public class Game implements Runnable {
                 }
             }
         }
-
-
-        int tmp = (int)(Math.random()*100)%4;
-        table[tmp] = player[0] ;
-
-        for(int i = 1 ; i < player.length ; ++i){
-
-           do{
-            
-            tmp = (int)(Math.random()*100)%4;
-
-           }while(table[tmp] == -1 );
-            table[tmp] = i ;
-            
-        }
-
+     
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i = 0 ; i < player.length; ++i)
+            list.add(i);
+        for(int i = 0; i < player.length; ++i)
+            table[i] = list.remove(rng.nextInt(list.size())).intValue();
+        for( int i : table)
+            System.out.println(i);
+            player = teamplayer;
     }
 
     /**
