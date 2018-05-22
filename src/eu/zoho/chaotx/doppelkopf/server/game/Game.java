@@ -1,14 +1,17 @@
 package eu.zoho.chaotx.doppelkopf.server.game;
 
+<<<<<<< HEAD:java/src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+=======
+>>>>>>> 7c75a54eb9de70de4821acaf51c612ab12a4a484:src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
 import java.util.Stack;
 
 
-public class Game implements Runnable {
+public class Game {
     private Player[] player; // 1d arrays sind schneller und flexibler -> zwischen den teams befindet sich ein null-Element
     private Card[] cards;
     //private Board board; // brauchen wa echt ne eigene Klasse fürs board?
@@ -17,7 +20,6 @@ public class Game implements Runnable {
     private Stack<Card> board;
     private int[] table; // enthält Player indexe sortiert nach Sitzordnung
     private int nextplayer; // zeiger welcher auf den aktuellen Spieler im table-array zeigt
-    private boolean running;
 
     public Game(Player[] someplayer, Card[] somecards) {
         player = someplayer;
@@ -26,6 +28,10 @@ public class Game implements Runnable {
         //board = someboard;
         board = new Stack<>();
 
+    }
+
+    public Stack<Card> getBoard() {
+        return board;
     }
 
     /**
@@ -41,9 +47,10 @@ public class Game implements Runnable {
      * 
      * Ziel:
      *  - player-array mit den Spielern aus team1 an index 0 (und ggf. 1) gefolgt von null-Element und team2
-     *  - table-array mit den player-indexen in zufälliger Reihenfolge (z.B. {0, 3, 1, 2})
+     *  - table-array mit den player-indexen in zufälliger Reihenfolge (z.B. {0, 3, 1, 5})
      *  - alle Karten wurden zufällig aber gleichmäßig an alle Spieler ausgeteilt
      */
+<<<<<<< HEAD:java/src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
     private void init() {
         Player[] teamplayer = new Player[5];
 
@@ -91,6 +98,10 @@ public class Game implements Runnable {
         for( int i : table)
             System.out.println(i);
             player = teamplayer;
+=======
+    public void init() {
+
+>>>>>>> 7c75a54eb9de70de4821acaf51c612ab12a4a484:src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
     }
 
     /**
@@ -101,8 +112,12 @@ public class Game implements Runnable {
      * 
      * @return boolean - true if play is valid, false otherwise
      */
-    private boolean checkPlay(Card[] somecards) {
+    public boolean checkPlay(Card[] somecards) {
         return true;
+    }
+
+    public boolean checkPlay(Card somecard) {
+        return false;
     }
 
     /**
@@ -110,7 +125,7 @@ public class Game implements Runnable {
      * Ziel: Spieler hat Karte auf's Board abgelegt, je nach Situation (und Regelwerk)
      * sind dementsprechend anzuwendende Aktionen durchgeführt worden (sprich Player.addToPile(Card))
      */
-    private void play(Player player, Card card) {
+    public void play(Player player, Card card) {
         board.push(player.removeCard(card));
 
         // TODO
@@ -122,12 +137,10 @@ public class Game implements Runnable {
                 break;
             }
         }
-
-        if(cards.length == 0)
-            running = false;
     }
 
-    private void doTurn() {
+    /* deprecated
+    public void doTurn() {
         Player current_player = player[table[nextplayer]];
         Card play = current_player.getNextPlay(); // blockiert -> wartet auf Antwort vom Client -> yield (TODO!)
 
@@ -138,15 +151,9 @@ public class Game implements Runnable {
             // sende Fehlermeldung an Client
         }
     }
+    //*/
 
-    @Override
-    public void run() {
-        init();
-        running = true;
-
-        while(running)
-            doTurn();
-
-        System.out.println("Game finished");
+    public Player getNextPlayer() {
+        return player[table[nextplayer]];
     }
 }
