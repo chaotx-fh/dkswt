@@ -1,5 +1,6 @@
 package eu.zoho.chaotx.doppelkopf.server.session;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class User {

@@ -37,10 +37,11 @@ public class DKClient extends Application {
 
                 if(response == 1) {
                     System.out.print("Please choose card to play: ");
-                    try {
+                    if(scanner.hasNextInt())
                         server.getOutputStream().write(scanner.nextInt());
-                    } catch(InputMismatchException e) {
+                    else {
                         server.getOutputStream().write(-1);
+                        scanner = new Scanner(System.in);
                     }
                 }
             }
@@ -57,11 +58,4 @@ public class DKClient extends Application {
     public void start(Stage ps) {
         Platform.exit();
     }
-
-    /*
-    public String getUser();
-    public String getEmail();
-    public String getPassword();
-    public DKConnector getConnector();
-    */
 }

@@ -1,23 +1,18 @@
 package eu.zoho.chaotx.doppelkopf.server.game;
 
-<<<<<<< HEAD:java/src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-=======
->>>>>>> 7c75a54eb9de70de4821acaf51c612ab12a4a484:src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
 import java.util.Stack;
 
 
 public class Game {
-    private Player[] player; // 1d arrays sind schneller und flexibler -> zwischen den teams befindet sich ein null-Element
+    private Player[] player; // zwischen den teams befindet sich ein null-Element
     private Card[] cards;
-    //private Board board; // brauchen wa echt ne eigene Klasse fürs board?
-
-
     private Stack<Card> board;
+
     private int[] table; // enthält Player indexe sortiert nach Sitzordnung
     private int nextplayer; // zeiger welcher auf den aktuellen Spieler im table-array zeigt
 
@@ -25,7 +20,6 @@ public class Game {
         player = someplayer;
         cards = somecards;
         table = new int [] {-1,-1,-1,-1};
-        //board = someboard;
         board = new Stack<>();
 
     }
@@ -47,61 +41,43 @@ public class Game {
      * 
      * Ziel:
      *  - player-array mit den Spielern aus team1 an index 0 (und ggf. 1) gefolgt von null-Element und team2
-     *  - table-array mit den player-indexen in zufälliger Reihenfolge (z.B. {0, 3, 1, 5})
+     *  - table-array mit den player-indexen in zufälliger Reihenfolge (z.B. {0, 3, 1, 4})
      *  - alle Karten wurden zufällig aber gleichmäßig an alle Spieler ausgeteilt
      */
-<<<<<<< HEAD:java/src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
-    private void init() {
-        Player[] teamplayer = new Player[5];
-
-        int cp, nnc, cc = 0;
-        Random rng = new Random(System.nanoTime());
-        while(cc != cards.length){
-            if(player[cp = rng.nextInt(4)].getHand().length < cards.length/4){
-                if(cards[nnc = rng.nextInt(48)] != null){
-                    player[cp].addToHand(cards[nnc]);
-                    if(/*cards[nnc].getSymbol() == Club && cards[nnc].getValue() == QUEEN */ true){
-                        if(teamplayer[0] != null){
-                            if(teamplayer[0] == player[cp]){
-                                teamplayer[1] = null;
-                                for(int i = 0 ; i < player.length; ++i){
-                                    int j = 0;
-                                    if(player[i] != player[cp]){
-                                        teamplayer[j++ +2] = player[i];
-                                    }
-                                }
-                            }else{
-                                teamplayer[1] = player[cp];
-                                teamplayer[2] = null;
-                                int j = 0;
-                                for(int i = 0 ; i < player.length ; ++i ){
-                                    if((player[i] != teamplayer[0]) && (player[i] != teamplayer[1])){
-                                        teamplayer[j++ +3] = player[i];
-                                    }
-                                }
-                            }
-                        }else{
-                            teamplayer[0] = player[cp];
-                        }
-                    }
-                    cards[nnc] = null;
-                    ++cc;
-                }
-            }
-        }
-     
-        ArrayList<Integer> list = new ArrayList<>();
-        for(int i = 0 ; i < player.length; ++i)
-            list.add(i);
-        for(int i = 0; i < player.length; ++i)
-            table[i] = list.remove(rng.nextInt(list.size())).intValue();
-        for( int i : table)
-            System.out.println(i);
-            player = teamplayer;
-=======
     public void init() {
+        Player[] teamplayer = new Player[player.length+1];
+        Random rng = new Random(System.nanoTime());     
 
->>>>>>> 7c75a54eb9de70de4821acaf51c612ab12a4a484:src/eu/zoho/chaotx/doppelkopf/server/game/Game.java
+        List<Integer> playerlist = new LinkedList<>();
+        List<Card> cardlist = new LinkedList<>();
+
+        for(int i = 0 ; i < player.length; ++i)
+            playerlist.add(new Integer(i));
+
+        for(Card c : cards)
+            cardlist.add(c);
+
+        for(int i = 0; i < player.length; ++i) {
+            table[i] = playerlist.remove(rng.nextInt(playerlist.size())).intValue();
+
+            // Karten austeilen
+            boolean is_re = false; // Kreuzdame -> Re-partei
+            for(int j = 0; j < cards.length/player.length; ++j) {
+                Card card = cardlist.remove(rng.nextInt(cardlist.size()));
+                player[table[i]].addToHand(card);
+
+                if(!is_re)
+                    is_re = card.getSymbol() == Card.Symbol.CLUB && card.getValue() == Card.Value.QUEEN;
+            }
+
+            // team verteilung -> r, r, null, k, k bzw. r, null, k, k, k
+            int l = is_re ? 0 : (teamplayer.length-1);
+            while(teamplayer[l] != null) l += is_re ? 1 : -1;
+            teamplayer[l] = player[table[i]];
+            table[i] = l; // "Spieler setzt sich an den Tisch"
+        }
+
+        player = teamplayer;
     }
 
     /**
@@ -117,7 +93,7 @@ public class Game {
     }
 
     public boolean checkPlay(Card somecard) {
-        return false;
+        return somecard != null;
     }
 
     /**
@@ -125,33 +101,17 @@ public class Game {
      * Ziel: Spieler hat Karte auf's Board abgelegt, je nach Situation (und Regelwerk)
      * sind dementsprechend anzuwendende Aktionen durchgeführt worden (sprich Player.addToPile(Card))
      */
-    public void play(Player player, Card card) {
-        board.push(player.removeCard(card));
+    public void play(Player curplayer, Card card) {
+        board.push(curplayer.removeCard(card));
 
-        // TODO
-
-        // wir könnten das cards-array nutzen um zu bestimmen ob alle karten ausgespielt wurden
-        for(int i = 0; i < cards.length; ++i) {
-            if(cards[i] == card) {
-                cards[i] = null;
-                break;
-            }
+        if(board.size() == player.length-1) {
+            // TODO // sieger ermitteln // karten zuweisen
+            // ggf. true/false zurückgeben (so können wir von ausserhalb ermitteln ob ne runde beendet wurde)
         }
-    }
 
-    /* deprecated
-    public void doTurn() {
-        Player current_player = player[table[nextplayer]];
-        Card play = current_player.getNextPlay(); // blockiert -> wartet auf Antwort vom Client -> yield (TODO!)
-
-        if(checkPlay(new Card[]{play, board.peek()})) {
-            play(current_player, play);
-            nextplayer = (nextplayer+1)%table.length;
-        } else {
-            // sende Fehlermeldung an Client
-        }
+        nextplayer = (nextplayer+1)%table.length;
+        // return false/true
     }
-    //*/
 
     public Player getNextPlayer() {
         return player[table[nextplayer]];

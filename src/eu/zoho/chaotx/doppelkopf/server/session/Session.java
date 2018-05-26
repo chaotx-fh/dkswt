@@ -45,7 +45,7 @@ public class Session implements Runnable {
             new Card(Card.Symbol.CLUB, Card.Value.ACE), new Card(Card.Symbol.CLUB, Card.Value.ACE),
 
             new Card(Card.Symbol.SPADE, Card.Value.NINE), new Card(Card.Symbol.SPADE, Card.Value.NINE),
-            //new Card(Card.Symbol.SPADE, Card.Value.TEN), new Card(Card.Symbol.SPADE, Card.Value.TEN),
+            new Card(Card.Symbol.SPADE, Card.Value.TEN), new Card(Card.Symbol.SPADE, Card.Value.TEN),
             new Card(Card.Symbol.SPADE, Card.Value.JACK), new Card(Card.Symbol.SPADE, Card.Value.JACK),
             new Card(Card.Symbol.SPADE, Card.Value.QUEEN), new Card(Card.Symbol.SPADE, Card.Value.QUEEN),
             new Card(Card.Symbol.SPADE, Card.Value.KING), new Card(Card.Symbol.SPADE, Card.Value.KING),
@@ -67,6 +67,8 @@ public class Session implements Runnable {
         };
 
         game = new Game(playerMap.values().toArray(new Player[0]), cards);
+
+        initProtocol();
     }
 
     public void run() {
@@ -74,16 +76,15 @@ public class Session implements Runnable {
 
         Socket next;
         while(true) {
-            printBoard();
-            printHand(game.getNextPlayer());
+            printBoard(game.getNextPlayer());
 
             next = userMap.get(game.getNextPlayer()).getClient();
             protocol.getHandler("game_running").handle(next);
         }
     }
 
-    // TODO these are meant to be serialized
-    private void initProtocols() {
+    private void initProtocol() {
+        protocol = new Protocol();
         protocol.setHandler("game_running", (client) -> {
             try {
                 client.getOutputStream().write(1);
@@ -91,13 +92,12 @@ public class Session implements Runnable {
                 Card card = player.getFromHand(client.getInputStream().read());
 
                 while(!game.checkPlay(card)) {
-                    System.out.println(player + "[room " + id + "]: invalid play " + card);
                     client.getOutputStream().write(0);
+                    client.getOutputStream().write(1);
                     card = player.getFromHand(client.getInputStream().read());
                 }
 
                 game.play(player, card);
-                System.out.println(player + "[room " + id + "]: played " + card);
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -105,17 +105,21 @@ public class Session implements Runnable {
     }
 
     // TEMP
-    private void printBoard() {
-        System.out.print("server[room " + id + "]: [Board]:");
-        game.getBoard().forEach((c) -> System.out.print(" " + c));
-        System.out.println();
-    }
+    private void printBoard(Player next) {
+        String hand_str = "";
+        String board_str = "";
+        String header = "room [" + id + "] ";
+        for(int i = 0; i < 100; ++i) header += '-';
 
-    private void printHand(Player player) {
-        System.out.print(player + "[room " + id + "]: [Hand]:");
-        for(Card c : player.getHand())
-            if(c != null)
-                System.out.print(" " + c);
-        System.out.println();
+        for(Card c : game.getBoard())
+            board_str += " " + c;
+
+        for(Card c : next.getHand())
+            if(c != null) hand_str += " " + c;
+
+        System.out.println(header);
+        System.out.printf("| Player: %s\n", next);
+        System.out.printf("| %-8s%s\n", "Board:", board_str);
+        System.out.printf("| %-8s%s\n", "Hand:", hand_str);
     }
 }
