@@ -32,17 +32,21 @@ public class Card {
     };
 
     private int rank, points;
+    private boolean is_trump;
     private Symbol symbol;
     private Value value;
 
     public Card (Symbol symbol, Value value){
         id = _counter++;
-        this.symbol=symbol;
-        this.value=value;
-        if(symbol != Symbol.DIAMOND && (value == (symbol == Symbol.HEART ? value : Value.TEN) || value == Value.ACE || value == Value.KING || value == Value.NINE)) {
+        this.symbol = symbol;
+        this.value = value;
+
+        if(symbol != Symbol.DIAMOND && value != (symbol == Symbol.HEART ? Value.TEN : null) && value != Value.QUEEN && value != Value.JACK) {
             rank = value.numval();
+            is_trump = false;
         } else {
             rank = symbol == Symbol.HEART && value == Value.TEN ? 16 : value.numval()+symbol.numval()+4;
+            is_trump = true;
         }
 
         points = value == Value.NINE ? 0
@@ -70,6 +74,15 @@ public class Card {
 
     public int getId() {
         return id;
+    }
+
+    /**
+     * @brief returns wether the card is a trump card or not
+     * 
+     * @return boolean - true if card is a trump, false otherwise
+     */
+    public boolean isTrump() {
+        return is_trump;
     }
 
     @Override

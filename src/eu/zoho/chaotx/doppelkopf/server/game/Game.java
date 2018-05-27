@@ -46,7 +46,7 @@ public class Game {
      */
     public void init() {
         Player[] teamplayer = new Player[player.length+1];
-        Random rng = new Random(System.nanoTime());     
+        Random rng = new Random(System.nanoTime());
 
         List<Integer> playerlist = new LinkedList<>();
         List<Card> cardlist = new LinkedList<>();
@@ -81,19 +81,28 @@ public class Game {
     }
 
     /**
-     * TODO
-     * so wie die Dinge gerade stehen befindet sich an index 0 die Karte die gespielt
-     * werden soll und an index 1 die oberste Karte auf dem board (Reihenfolge und
-     * Anzahl sollten jedoch egal sein)
+     * @brief checks wether play is valid
      * 
+     * @param somecard - card to be played
      * @return boolean - true if play is valid, false otherwise
      */
-    public boolean checkPlay(Card[] somecards) {
-        return true;
-    }
-
     public boolean checkPlay(Card somecard) {
-        return somecard != null;
+        if(somecard == null) return false;
+
+        if(board.size() == 0 || board.get(0).isTrump()) // Trumpf
+            return true;
+
+        // Fehl
+        boolean has_fail = false;
+        for(Card c : player[table[nextplayer]].getHand()) {
+            if(c != null && !c.isTrump() && c.getSymbol() == board.get(0).getSymbol()) {
+                has_fail = true;
+                break;
+            }
+        }
+
+        // kein Fehl auf Hand oder muss bedient werden
+        return !has_fail || (!somecard.isTrump() && somecard.getSymbol() == board.get(0).getSymbol());
     }
 
     /**

@@ -72,7 +72,7 @@ clientdir: outputdir
 
 # compile output
 compileserver: serverdir
-	javac -d $(_ServerDir) $(_ServerClasses)
+	javac -d build/classes/server $(_ServerClasses)
 
 compileclient: clientdir
 	javac -d $(_ClientDir) $(_ClientClasses)
